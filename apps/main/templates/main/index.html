@@ -23,12 +23,13 @@
 		</div>
 		{% for post in messages %}
 		<div class="post">
-			<b>{{post.author_id.first_name}} {{post.author_id.last_name}}</b> - {{post.created_at}}<br>
+			<b>{{post.author_id.first_name}} {{post.author_id.last_name}}</b> - {{post.time}}<br>
 			<span class="postcontent">{{post.message}}</span>
 			
-			<form action="/newcomment" method="post">
-				<input type="hidden" name="FParentMid" value="post['Mid']}}">
-				<input type="text" name="FNewComm" placeholder="Write a comment..." maxlength="200" class="newcommbox">
+			<form action="/comments/create" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="message_id" value="{{post.id}}">
+				<input type="text" name="comment" placeholder="Write a comment..." maxlength="200" class="newcommbox">
 				<input type="submit" value="Post">
 			</form>
 		</div>

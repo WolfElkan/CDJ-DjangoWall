@@ -30,14 +30,8 @@ def dbgui(request):
 	return render(request, "main/dbgui.html", context)
 
 def query(request):
-	x = User.objects.filter(id=0)
-	print "*"*135
-	if x:
-		print True
-	else:
-		print False
-	print "*"*135
-	return redirect ('/logout')
+	exec(request.POST['command'])
+	return redirect ('/dbgui')
 
 def users_delete(request, id):
 	me = User.objects.filter(id=id)[0]
@@ -101,10 +95,12 @@ def logout(request): # GET
 def wall(request):
 	me = User.objects.filter(id=request.session['user_id'])[0]
 	messages = Message.objects.all()
+	for m in messages:
+		m.time = m.created_at.strftime("%m/%d/%y %-I:%M%p")
+		comments = Comment.objects.filter(message_id=m)
 	context = {
 		'me':me,
 		'messages':messages,
-		'format':"%m/%d/%y %-I:%M%p"
 	}
 	return render(request, "main/index.html", context)
 
@@ -117,6 +113,17 @@ def messages_create(request):
 		author_id=me,
 	)
 	return redirect ('/')
+
+# - - - - - COMMENTS - - - - -
+
+def comments_create(request):
+	me = User.objects.filter(id=request.session['user_id'])[0]
+	message = Message.objects.filter(id=request.POST['message'])[0]
+	Comment.objects.create(
+		comment=request.POST['comment'],
+		author_id=me,
+		message_id=message,
+	)
 
 
 

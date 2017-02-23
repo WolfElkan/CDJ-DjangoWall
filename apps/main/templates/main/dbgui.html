@@ -16,7 +16,7 @@
 			text-align: right;
 		}
 		.ForeignKey {
-			font-style: italic;
+			/*font-style: italic;*/
 			text-align: center;
 		}
 		h1{
@@ -31,21 +31,26 @@
 			padding: 1px 5px;
 		}
 
-		#nuke_button {
-			background-color: red;
-			height: 50px;
-			width: 80px;
+		.button {
+			padding: 5px;
 			color: white;
-			font-size: 20px;
+			font-size: 15px;
 			font-weight: bold;
 			border-radius: 5px;
+			display: block;
+			text-decoration: none;
 		}
 
 	</style>
 </head>
 <body>
 
-<a href="/nuke"><button id="nuke_button">NUKE</button></a>
+Code Terminal:
+<form action="/query" method="post">
+	{% csrf_token %}
+	<textarea name="command" rows="10" cols="50" style="font-family: monospace;"></textarea>
+	<input class="button" style="background-color: green;" type="submit" value="RUN">
+</form>
 
 <h1 class="User">User</h1>
 <table>
@@ -119,6 +124,8 @@
 <span style="font-weight: bold; color: green;">Green</span>
 <span style="font-weight: bold; color: purple;">Purple</span>
 <span style="font-weight: bold; color: orange;">Orange</span> -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<a href="/nuke"><button style="background-color: red;" class="button">NUKE</button></a>
 
 </body>
 </html>

@@ -16,5 +16,8 @@ urlpatterns = [
 	# Messages
 	url(r'^messages/create$', views.messages_create),
 
+	# Comments
+	url(r'^comments/create$', views.comments_create),
+
 	url(r'^.*$', views.index),
 ]
