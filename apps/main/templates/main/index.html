@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Wall Assignment - advanced version</title>
+		{% load staticfiles %}
+		<script src="{% static 'main/js/script.js' %}" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+	</head>
+	<body>
+		<div id="userinfo">
+			You are logged in as {{me.full_name}}.
+			<br>
+			<a href="/logout">Sign Out</a>
+		</div>
+		<div id="newpost">
+		<h3>New Post:</h3>
+			<form action="/newpost" method="post">
+				<textarea rows="4" cols="40" name="FNewPost" placeholder="What's on your mind?" class="newpostbox"></textarea>
+				<input class="submit" type="submit" value="Post!">
+			</form>
+		</div>
+		{% for post in Posts %}
+		<div class="post">
+			<b>post['author']}}</b> - post.created_at.strftime('%m/%d/%y %-I:%M%p')}}<br>
+			<span class="postcontent">post.content}}</span>
+			
+			<form action="/newcomment" method="post">
+				<input type="hidden" name="FParentMid" value="post['Mid']}}">
+				<input type="text" name="FNewComm" placeholder="Write a comment..." maxlength="200" class="newcommbox">
+				<input type="submit" value="Post">
+			</form>
+		</div>
+		{% endfor %}
+
+	</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Database Viewer</title>
+	<style type="text/css">
+		.User {
+			color: blue;
+		}
+		.Message {
+			color: green;
+		}
+		.Comment {
+			color: purple;
+		}
+		.Auto {
+			text-align: right;
+		}
+		.ForeignKey {
+			font-style: italic;
+		}
+		h1{
+			margin-bottom: 0;
+		}
+
+		th, td, table {
+			border: solid black 1px;
+		}
+
+		th, td {
+			padding: 1px 5px;
+		}
+
+		#nuke_button {
+			background-color: red;
+			height: 50px;
+			width: 80px;
+			color: white;
+			font-size: 20px;
+			font-weight: bold;
+			border-radius: 5px;
+		}
+
+	</style>
+</head>
+<body>
+
+<a href="/nuke"><button id="nuke_button">NUKE</button></a>
+
+<h1 class="User">User</h1>
+<table>
+	<thead>
+		<th>id</th>
+		<th>first_name</th>
+		<th>last_name</th>
+		<th>email</th>
+		<th>password</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</thead>
+	{% for record in User %}
+	<tr>
+		<td class="Auto User">{{record.id}}</td>
+		<td class="CharField">{{record.first_name}}</td>
+		<td class="CharField">{{record.last_name}}</td>
+		<td class="CharField">{{record.email}}</td>
+		<td class="CharField">{{record.password}}</td>
+		<td class="DateTimeField">{{record.created_at}}</td>
+		<td class="DateTimeField">{{record.updated_at}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<h1 class="Message">Message</h1>
+<table>
+	<thead>
+		<th>id</th>
+		<th>author_id</th>
+		<th>message</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</thead>
+	{% for record in Message %}
+	<tr>
+		<td class="Auto Message">{{record.id}}</td>
+		<td class="ForeignKey User">{{record.author_id}}</td>
+		<td class="TextField">{{record.message}}</td>
+		<td class="DateTimeField">{{record.created_at}}</td>
+		<td class="DateTimeField">{{record.updated_at}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<h1 class="Comment">Comment</h1>
+<table>
+	<thead>
+		<th>id</th>
+		<th>author_id</th>
+		<th>message_id</th>
+		<th>comment</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</thead>
+	{% for record in Comment %}
+	<tr>
+		<td class="Auto Comment">{{record.id}}</td>
+		<td class="ForeignKey User">{{record.author_id}}</td>
+		<td class="ForeignKey Message">{{record.message_id}}</td>
+		<td class="TextField">{{record.comment}}</td>
+		<td class="DateTimeField">{{record.created_at}}</td>
+		<td class="DateTimeField">{{record.updated_at}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<!-- 
+<span style="font-weight: bold; color: red;">Red</span>
+<span style="font-weight: bold; color: blue;">Blue</span>
+<span style="font-weight: bold; color: green;">Green</span>
+<span style="font-weight: bold; color: purple;">Purple</span>
+<span style="font-weight: bold; color: orange;">Orange</span> -->
+
+</body>
+</html>
