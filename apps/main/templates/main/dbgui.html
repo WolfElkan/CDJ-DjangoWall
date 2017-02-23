@@ -48,7 +48,7 @@
 Code Terminal:
 <form action="/query" method="post">
 	{% csrf_token %}
-	<textarea name="command" rows="10" cols="50" style="font-family: monospace;"></textarea>
+	<textarea name="command" rows="10" cols="50" style="font-family: monospace;">{{ command }}</textarea>
 	<input class="button" style="background-color: green;" type="submit" value="RUN">
 </form>
 

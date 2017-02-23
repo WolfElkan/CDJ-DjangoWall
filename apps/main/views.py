@@ -26,11 +26,14 @@ def dbgui(request):
 		'User'   : User.objects.all(),
 		'Message': Message.objects.all(),
 		'Comment': Comment.objects.all(),
+		'command': request.session['command']
 	}
 	return render(request, "main/dbgui.html", context)
 
 def query(request):
-	exec(request.POST['command'])
+	command = request.POST['command']
+	request.session['command'] = command
+	exec(command)
 	return redirect ('/dbgui')
 
 def users_delete(request, id):
