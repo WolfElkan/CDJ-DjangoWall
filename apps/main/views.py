@@ -34,7 +34,7 @@ def latest(model):
 		collection += [x.id]
 	return max(collection)
 
-# - - - - - DEVELOPER VIEWS - - - - -
+# - - - - - DEVELOPER - - - - -
 
 def dbgui(request):
 	context = {
@@ -46,9 +46,12 @@ def dbgui(request):
 	return render(request, "main/dbgui.html", context)
 
 def query(request):
-	x = User.objects.create(email="asdf")
+	x = User.objects.filter(id=0)
 	print "*"*135
-	print x.id
+	if x:
+		print True
+	else:
+		print False
 	print "*"*135
 	return logout(request)
 
@@ -58,11 +61,11 @@ def nuke(request):
 	Comment.objects.all().delete()
 	return redirect ('/dbgui')
 
-# - - - - - APPLICATION VIEWS - - - - -
+# - - - - - SESSION - - - - -
 
 def index(request):
-	seshinit(request, 'logged_in', False)
-	if request.session['logged_in']:
+	seshinit(request, 'user_id', 0)
+	if User.objects.filter(id=request.session['user_id']):
 		return access(request)
 	else:
 		return entrance(request)
@@ -80,10 +83,9 @@ def login(request):
 	me = User.objects.filter(email=request.POST['email'])[0]
 	if request.POST['password'] == me.password:
 		request.session['user_id'] = me.id
-		request.session['logged_in'] = True
 		request.session['log_password_error'] = ""
 	else:
-		request.session['logged_in'] = False
+		request.session['user_id'] = 0
 		request.session['log_password_error'] = "Your password is incorrect"
 	return redirect ('/')
 
@@ -97,10 +99,9 @@ def register(request):
 		)
 	# This validation logic should really be in the model, per FMSC
 		request.session['user_id'] = me.id
-		request.session['logged_in'] = True
 		request.session['reg_password_conf_error'] = ""
 	else:
-		request.session['logged_in'] = False
+		request.session['user_id'] = 0
 		request.session['reg_password_conf_error'] = "Passwords do not match"
 	return redirect ('/')
 
