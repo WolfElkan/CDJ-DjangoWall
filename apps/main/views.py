@@ -100,7 +100,7 @@ def wall(request):
 	messages = Message.objects.all()
 	for m in messages:
 		m.time = m.created_at.strftime("%m/%d/%y %-I:%M%p")
-		comments = Comment.objects.filter(message_id=m)
+		m.comments = Comment.objects.filter(message_id=m)
 	context = {
 		'me':me,
 		'messages':messages,
@@ -121,13 +121,14 @@ def messages_create(request):
 
 def comments_create(request):
 	me = User.objects.filter(id=request.session['user_id'])[0]
-	message = Message.objects.filter(id=request.POST['message'])[0]
+	message_id = request.POST['message_id']
+	message = Message.objects.filter(id=message_id)[0]
 	Comment.objects.create(
 		comment=request.POST['comment'],
 		author_id=me,
 		message_id=message,
 	)
-
+	return redirect ('/')
 
 
 

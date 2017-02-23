@@ -22,10 +22,15 @@
 			</form>
 		</div>
 		{% for post in messages %}
-		<div class="post">
+		<div class="message">
 			<b>{{post.author_id.first_name}} {{post.author_id.last_name}}</b> - {{post.time}}<br>
-			<span class="postcontent">{{post.message}}</span>
-			
+			<span class="message-content">{{post.message}}</span>
+			{% for comment in post.comments %}
+				<div class="comment">
+					<b>{{comment.author_id.first_name}} {{comment.author_id.last_name}}:</b>
+					<span class="comment-content">{{comment.comment}}</span>
+				</div>
+			{% endfor %}
 			<form action="/comments/create" method="post">
 				{% csrf_token %}
 				<input type="hidden" name="message_id" value="{{post.id}}">
@@ -34,6 +39,5 @@
 			</form>
 		</div>
 		{% endfor %}
-
 	</body>
 </html>
