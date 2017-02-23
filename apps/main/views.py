@@ -19,21 +19,6 @@ def seshinit(request, sesh, val=''):
 	if sesh not in request.session:
 		request.session[sesh] = val
 
-# def seshinits(request, sesh, val=''):
-# 	if sesh not in request.session:
-# 		request.session[sesh] = val
-
-# def seshinit0(request, sesh, val=''):
-# 	if sesh not in request.session:
-# 		request.session[sesh] = val
-
-def latest(model):
-	things = model.objects.all()
-	collection = []
-	for x in things:
-		collection += [x.id]
-	return max(collection)
-
 # - - - - - DEVELOPER - - - - -
 
 def dbgui(request):
@@ -41,7 +26,6 @@ def dbgui(request):
 		'User'   : User.objects.all(),
 		'Message': Message.objects.all(),
 		'Comment': Comment.objects.all(),
-		'Session': request.session
 	}
 	return render(request, "main/dbgui.html", context)
 
@@ -53,7 +37,12 @@ def query(request):
 	else:
 		print False
 	print "*"*135
-	return logout(request)
+	return redirect ('/logout')
+
+def users_delete(request, id):
+	me = User.objects.filter(id=id)[0]
+	me.delete()
+	return redirect ('/dbgui')
 
 def nuke(request):
 	User.objects.all().delete()
@@ -61,16 +50,16 @@ def nuke(request):
 	Comment.objects.all().delete()
 	return redirect ('/dbgui')
 
-# - - - - - SESSION - - - - -
+# - - - - - USERS - - - - -
 
-def index(request):
+def index(request): # GET
 	seshinit(request, 'user_id', 0)
 	if User.objects.filter(id=request.session['user_id']):
 		return access(request)
 	else:
 		return entrance(request)
 
-def entrance(request):
+def entrance(request): # GET
 	seshinit(request, 'reg_password_conf_error')
 	seshinit(request, 'log_password_error')
 	context = {
@@ -79,7 +68,7 @@ def entrance(request):
 	}
 	return render(request, "main/public.html", context)
 
-def login(request):
+def login(request): # POST
 	me = User.objects.filter(email=request.POST['email'])[0]
 	if request.POST['password'] == me.password:
 		request.session['user_id'] = me.id
@@ -89,7 +78,7 @@ def login(request):
 		request.session['log_password_error'] = "Your password is incorrect"
 	return redirect ('/')
 
-def register(request):
+def users_create(request): # POST
 	if request.POST['password'] == request.POST['password_conf']:
 		me = User.objects.create(
 		first_name = request.POST['first_name'],
@@ -105,7 +94,7 @@ def register(request):
 		request.session['reg_password_conf_error'] = "Passwords do not match"
 	return redirect ('/')
 
-def logout(request):
+def logout(request): # GET
 	request.session.clear()
 	return redirect ('/')
 
@@ -115,4 +104,22 @@ def access(request):
 		'me':me,
 	}
 	return render(request, "main/index.html", context)
+
+# - - - - - MESSAGES - - - - -
+
+def messages_create(request):
+	me = User.objects.filter(id=request.session['user_id'])[0]
+	Message.objects.create(
+		message=request.POST['content'],
+		author_id=me,
+	)
+	return redirect ('/')
+
+
+
+
+
+
+
+
 

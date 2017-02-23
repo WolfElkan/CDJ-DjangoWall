@@ -7,11 +7,14 @@ urlpatterns = [
 	url(r'^query$', views.query),
 	url(r'^nuke$', views.nuke),
 
-	# App
-	url(r'^$', views.index),
+	# Users
 	url(r'^login$', views.login),
-	url(r'^register$', views.register),
+	url(r'^register$', views.users_create),
 	url(r'^logout$', views.logout),
+	url(r'^users/delete/(?P<id>\d+)$', views.users_delete),
+
+	# Messages
+	url(r'^messages/create$', views.messages_create),
 
 	url(r'^.*$', views.index),
 ]

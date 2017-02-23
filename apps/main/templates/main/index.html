@@ -14,9 +14,10 @@
 			<a href="/logout">Sign Out</a>
 		</div>
 		<div id="newpost">
-		<h3>New Post:</h3>
-			<form action="/newpost" method="post">
-				<textarea rows="4" cols="40" name="FNewPost" placeholder="What's on your mind?" class="newpostbox"></textarea>
+		<h3>New Message:</h3>
+			<form action="/messages/create" method="post">
+				{% csrf_token %}
+				<textarea rows="4" cols="40" name="content" placeholder="What's on your mind?" class="newpostbox"></textarea>
 				<input class="submit" type="submit" value="Post!">
 			</form>
 		</div>

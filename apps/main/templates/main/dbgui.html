@@ -17,6 +17,7 @@
 		}
 		.ForeignKey {
 			font-style: italic;
+			text-align: center;
 		}
 		h1{
 			margin-bottom: 0;
@@ -82,7 +83,7 @@
 	{% for record in Message %}
 	<tr>
 		<td class="Auto Message">{{record.id}}</td>
-		<td class="ForeignKey User">{{record.author_id}}</td>
+		<td class="ForeignKey User">{{record.author_id.id}}</td>
 		<td class="TextField">{{record.message}}</td>
 		<td class="DateTimeField">{{record.created_at}}</td>
 		<td class="DateTimeField">{{record.updated_at}}</td>
@@ -103,8 +104,8 @@
 	{% for record in Comment %}
 	<tr>
 		<td class="Auto Comment">{{record.id}}</td>
-		<td class="ForeignKey User">{{record.author_id}}</td>
-		<td class="ForeignKey Message">{{record.message_id}}</td>
+		<td class="ForeignKey User">{{record.author_id.id}}</td>
+		<td class="ForeignKey Message">{{record.message_id.id}}</td>
 		<td class="TextField">{{record.comment}}</td>
 		<td class="DateTimeField">{{record.created_at}}</td>
 		<td class="DateTimeField">{{record.updated_at}}</td>
