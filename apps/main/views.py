@@ -55,7 +55,7 @@ def nuke(request):
 def index(request): # GET
 	seshinit(request, 'user_id', 0)
 	if User.objects.filter(id=request.session['user_id']):
-		return access(request)
+		return wall(request)
 	else:
 		return entrance(request)
 
@@ -98,10 +98,13 @@ def logout(request): # GET
 	request.session.clear()
 	return redirect ('/')
 
-def access(request):
+def wall(request):
 	me = User.objects.filter(id=request.session['user_id'])[0]
+	messages = Message.objects.all()
 	context = {
 		'me':me,
+		'messages':messages,
+		'format':"%m/%d/%y %-I:%M%p"
 	}
 	return render(request, "main/index.html", context)
 

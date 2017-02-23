@@ -21,10 +21,10 @@
 				<input class="submit" type="submit" value="Post!">
 			</form>
 		</div>
-		{% for post in Posts %}
+		{% for post in messages %}
 		<div class="post">
-			<b>post['author']}}</b> - post.created_at.strftime('%m/%d/%y %-I:%M%p')}}<br>
-			<span class="postcontent">post.content}}</span>
+			<b>{{post.author_id.first_name}} {{post.author_id.last_name}}</b> - {{post.created_at}}<br>
+			<span class="postcontent">{{post.message}}</span>
 			
 			<form action="/newcomment" method="post">
 				<input type="hidden" name="FParentMid" value="post['Mid']}}">
