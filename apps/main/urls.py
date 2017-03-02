@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
 	# Dev
 	url(r'^dbgui$', views.dbgui),
-	url(r'^query$', views.query),
+	url(r'^hot$', views.hot),
 	url(r'^nuke$', views.nuke),
 
 	# Users

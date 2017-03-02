@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, redirect
 from .models import User, Message, Comment
+import bcrypt
 
 # - - - - - FUNCTIONS - - - - -
 
@@ -22,6 +23,7 @@ def seshinit(request, sesh, val=''):
 # - - - - - DEVELOPER - - - - -
 
 def dbgui(request):
+	seshinit(request,'command')
 	context = {
 		'User'   : User.objects.all(),
 		'Message': Message.objects.all(),
@@ -30,14 +32,14 @@ def dbgui(request):
 	}
 	return render(request, "main/dbgui.html", context)
 
-def query(request):
+def hot(request):
 	command = request.POST['command']
 	request.session['command'] = command
 	exec(command)
 	return redirect ('/dbgui')
 
 def users_delete(request, id):
-	me = User.objects.filter(id=id)[0]
+	me = User.objects.get(id=id)
 	me.delete()
 	return redirect ('/dbgui')
 
@@ -66,8 +68,12 @@ def entrance(request): # GET
 	return render(request, "main/public.html", context)
 
 def login(request): # POST
-	me = User.objects.filter(email=request.POST['email'])[0]
-	if request.POST['password'] == me.password:
+	me = User.objects.get(email=request.POST['email'])
+	pw = request.POST['password']
+	pw = bytes(pw)
+	print pw
+	if bcrypt.checkpw(pw,me.pw_hash):
+		pass
 		request.session['user_id'] = me.id
 		request.session['log_password_error'] = ""
 	else:
@@ -78,10 +84,10 @@ def login(request): # POST
 def users_create(request): # POST
 	if request.POST['password'] == request.POST['password_conf']:
 		me = User.objects.create(
-		first_name = request.POST['first_name'],
-		last_name  = request.POST['last_name'],
-		email      = request.POST['email'],
-		password   = request.POST['password'],
+			first_name = request.POST['first_name'],
+			last_name  = request.POST['last_name'],
+			email      = request.POST['email'],
+			pw_hash    = bcrypt.hashpw(bytes(request.POST['password']),bcrypt.gensalt()),
 		)
 	# This validation logic should really be in the model, per FMSC
 		request.session['user_id'] = me.id

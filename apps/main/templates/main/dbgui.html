@@ -45,8 +45,8 @@
 </head>
 <body>
 
-Code Terminal:
-<form action="/query" method="post">
+Hot Code:
+<form action="/hot" method="post">
 	{% csrf_token %}
 	<textarea name="command" rows="10" cols="50" style="font-family: monospace;">{{ command }}</textarea>
 	<input class="button" style="background-color: green;" type="submit" value="RUN">
@@ -69,7 +69,7 @@ Code Terminal:
 		<td class="CharField">{{record.first_name}}</td>
 		<td class="CharField">{{record.last_name}}</td>
 		<td class="CharField">{{record.email}}</td>
-		<td class="CharField">{{record.password}}</td>
+		<td class="CharField">[Encrypted]</td>
 		<td class="DateTimeField">{{record.created_at}}</td>
 		<td class="DateTimeField">{{record.updated_at}}</td>
 	</tr>
