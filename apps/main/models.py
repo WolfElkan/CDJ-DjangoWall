@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
-
 from django.db import models
+from . import supermodel
 
 # Create your models here.
 
@@ -11,7 +11,11 @@ class User(models.Model):
 	pw_hash    = models.CharField(max_length=60)
 	created_at = models.DateTimeField(auto_now_add = True)
 	updated_at = models.DateTimeField(auto_now = True)
-	# manager    = UserManager()
+	fields = ['first_name','last_name','email','pw_hash']
+	validations = [
+		
+	]
+	objects = supermodel.Manager('main','User', fields, validations)
 
 class Message(models.Model):
 	author_id  = models.ForeignKey(User)

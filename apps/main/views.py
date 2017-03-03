@@ -1,4 +1,4 @@
-# - - - - - IMPORTS - - - - -
+# - - - - - DEPENDENCIES - - - - -
 
 from django.shortcuts import render, redirect
 from .models import User, Message, Comment
@@ -36,6 +36,7 @@ def hot(request):
 	command = request.POST['command']
 	request.session['command'] = command
 	exec(command)
+	supermodel.foo()
 	return redirect ('/dbgui')
 
 def users_delete(request, id):
@@ -70,9 +71,7 @@ def entrance(request): # GET
 def login(request): # POST
 	me = User.objects.get(email=request.POST['email'])
 	pw = request.POST['password']
-	pw = bytes(pw)
-	print pw
-	if bcrypt.checkpw(pw,me.pw_hash):
+	if bcrypt.checkpw(bytes(pw),bytes(me.pw_hash)):
 		pass
 		request.session['user_id'] = me.id
 		request.session['log_password_error'] = ""

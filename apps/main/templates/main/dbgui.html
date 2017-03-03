@@ -19,6 +19,9 @@
 			/*font-style: italic;*/
 			text-align: center;
 		}
+		.Digest {
+			text-align: center;
+		}
 		h1{
 			margin-bottom: 0;
 		}
@@ -69,7 +72,7 @@ Hot Code:
 		<td class="CharField">{{record.first_name}}</td>
 		<td class="CharField">{{record.last_name}}</td>
 		<td class="CharField">{{record.email}}</td>
-		<td class="CharField">[Encrypted]</td>
+		<td class="Digest">&#x1f512;</td>
 		<td class="DateTimeField">{{record.created_at}}</td>
 		<td class="DateTimeField">{{record.updated_at}}</td>
 	</tr>
