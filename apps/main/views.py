@@ -62,14 +62,32 @@ def index(request): # GET
 def entrance(request): # GET
 	seshinit(request, 'reg_password_conf_error')
 	seshinit(request, 'log_password_error')
+	seshinit(request, 'log_email_error')
 	context = {
-		'reg':{'password_conf':{'e': request.session['reg_password_conf_error']}},
-		'log':{'password':{'e': request.session['log_password_error']}},
+		'reg':{
+			'password_conf':{
+				'e': request.session['reg_password_conf_error']
+			},
+		},
+		'log':{
+			'password':{
+				'e': request.session['log_password_error']
+			},
+			'email':{
+				'e': request.session['log_email_error']
+			},
+		},
 	}
 	return render(request, "main/public.html", context)
 
 def login(request): # POST
-	me = User.objects.get(email=request.POST['email'])
+	me = User.objects.filter(email=request.POST['email'])
+	me = False if len(me) == 0 else me[0]
+	if not me:
+		request.session['log_email_error'] = "You do not have an account. Please register."
+		return redirect('/')
+	else:
+		request.session['log_email_error'] = ""
 	pw = request.POST['password']
 	if bcrypt.checkpw(bytes(pw),bytes(me.pw_hash)):
 		pass

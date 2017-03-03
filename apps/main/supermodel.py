@@ -50,19 +50,20 @@ class Manager(models.Manager):
 			datum = data[x.field]
 			messages = x.errors(datum, messages)
 		return messages
-	def create(self, data):
-		if self.isValid(data):
-			sql = self.create_sql
-			for f in self.fields:
-				sql += data[f] + "', '"
-			sql += "{}', '{}')".format(datetime.now(),datetime.now())
-			print "SQL:", sql
-			connection.cursor().execute(sql)
-	# def get(self, crit):
+	# def create(self, **data):
+	# 	if self.isValid(data):
+	# 		sql = self.create_sql
+	# 		for f in self.fields:
+	# 			sql += data[f] + "', '"
+	# 		sql += "{}', '{}')".format(datetime.now(),datetime.now())
+	# 		print "SQL:", sql
+	# 		connection.cursor().execute(sql)
+	# def get(self, **crit):
+	# 	result = filter(self, crit)
+	# 	return False if len(result) == 0 else result[0]
+	# def filter(self, **crit):
 	# 	pass
-	# def filter(self, crit):
-	# 	pass
-	# def update(self, id, patch):
+	# def update(self, id, **patch):
 	# 	pass
 	# def delete(self, id):
 	# 	pass

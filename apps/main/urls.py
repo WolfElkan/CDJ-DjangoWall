@@ -19,5 +19,6 @@ urlpatterns = [
 	# Comments
 	url(r'^comments/create$', views.comments_create),
 
+	# Default
 	url(r'^.*$', views.index),
 ]
